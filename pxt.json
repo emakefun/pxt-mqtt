@@ -1,0 +1,17 @@
+{
+    "name": "EMmqtt",
+    "version": "1.0.3",
+    "description": "Emakefun company Self-developed mqtt module base on esp8266",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+        "radio": "*"
+    },
+    "files": [
+        "README.md",
+        "MQTT.ts",
+        "MQTT.cpp",
+        "_locales/zh/MQTT-strings.json"
+    ],
+    "public": true
+}

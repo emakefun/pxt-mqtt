@@ -1,0 +1,10 @@
+{
+	"MQTT.em_wifi_connect|block": "wifi连接 | 引脚设置: | 接收数据 TX: %receive| 发送数据 RX: %send | Wi-Fi: | 名称: %SSID| 密码: %PASSWORD 启动连接",
+	"MQTT.em_mqtt_connect|block": "mqtt 物联网服务初始设置 | 服务器: %serverIp| 端口: %serverPort || 客户端ID: %clientId | 客户端用户名: %username | 客户端密码: %clientPwd",
+	"MQTT.em_mqtt_publish_basic|block": "MQTT 向话题(topic) %topic 发送数据 %data",
+	"MQTT.em_mqtt_subscribe|block": "MQTT 订阅话题 %topic|Qos %qos",
+	"MQTT.em_mqtt_get_topic_message|block": "MQTT 获取主题 %topic 数据",
+	"MQTT.em_http_connect|block": "MQTT物联网模块连接http服务器 服务器地址 %serverIp ｜ 端口 %serverPort",
+	"MQTT.em_http_get|block": "MQTT物联网模块发送 get 请求 topic %topic"
+
+}
