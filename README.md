@@ -346,7 +346,7 @@ LinkID: 当前只支持 0
 
 - 消息接收块
   
-![image](image/rec.jpg)
+![image](image/rec.png)
 
 接收你所订阅的某个主题推送过来的消息。
 
