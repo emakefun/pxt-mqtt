@@ -124,7 +124,7 @@ namespace MQTT {
     //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3
     //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
     //% blockId=em_mqtt_setup
-    //% block="em connect wifi | Pin set: |TX: %send|RX: %receive|Wi-Fi: |name: %SSID|password: %PASSWORD"
+    //% block="wifi连接 | 引脚设置: | 接收数据 TX: %receive| 发送数据 RX: %send | Wi-Fi: | 名称: %SSID| 密码: %PASSWORD 启动连接"
     export function em_wifi_connect(/*serial*/receive: SerialPin, send: SerialPin,
         /*wifi*/SSID: string, PASSWORD: string
         ): void {
@@ -151,7 +151,7 @@ namespace MQTT {
     //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3
     //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
     //% blockId=em_mqtt_connect
-    //% block="em setup mqtt connect |IoT service: | server_ip: %serverIp| server_port: %serverPort || client_id: %clientId | username: %username | clientPwd: %clientPwd "
+    //% block="mqtt 物联网服务初始设置 | 服务器: %serverIp| 端口: %serverPort || 客户端ID: %clientId | 客户端用户名: %username | 客户端密码: %clientPwd"
     export function em_mqtt_connect(/*mqtt*/ serverIp: string, serverPort: number, clientId?: string, username?: string, clientPwd?: string
         ): void {
        
@@ -167,7 +167,7 @@ namespace MQTT {
 
     
 
-     //% blockId=mqtt_publish_basic block="MQTT publish topic %topic|Data %data"
+     //% blockId=mqtt_publish_basic block="MQTT 向话题(topic) %topic 发送数据 %data"
     //% weight=86
     export function em_mqtt_publish_basic(topic: string, data: string): void {
         //AT+MQTTPUB=0,"topic","test",1,0
@@ -185,7 +185,7 @@ namespace MQTT {
      * @param topic Mqtt topic; eg: test
      * @param qos QOS; eg: 0
     */
-    //% blockId=mqtt_subscribe block="MQTT Subscribe topic %topic|Qos %qos"
+    //% blockId=mqtt_subscribe block="MQTT 订阅话题 %topic|Qos %qos"
     //% weight=84
     export function em_mqtt_subscribe(topic: string, qos: number): void {
         if (!EMMQTT_SERIAL_INIT) {
@@ -202,7 +202,7 @@ namespace MQTT {
      * @param topic Mqtt topic; eg: test
      * @param qos QOS; eg: 0
     */
-    //% blockId=em_mqtt_get_topic_message block="MQTT get topic %topic message"
+    //% blockId=em_mqtt_get_topic_message block="MQTT 获取主题 %topic 数据"
     //% weight=84
     export function em_mqtt_get_topic_message(topic: string): string {
         if (!EMMQTT_SERIAL_INIT) {
@@ -338,7 +338,7 @@ namespace MQTT {
     //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3
     //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
     //% blockId=em_http_connect
-    //% block="em http connect init |IoT service: | server_ip: %serverIp| server_port: %serverPort"
+    //% block="MQTT物联网模块连接http服务器 服务器地址 %serverIp ｜ 端口 %serverPort"
     export function em_http_connect(/*mqtt*/ serverIp: string, serverPort: number
         ): void {
         // Emmqtt_serial_init();
