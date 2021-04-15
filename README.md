@@ -346,12 +346,12 @@ LinkID: 当前只支持 0
 
 - 消息接受块
   
-![image](image/14.png)
+![image](image/14.jpg)
 
 接收你所订阅的某个主题推送过来的消息,输出内容为字符串形式。
 
 ### 演示
 
-![image](image/last.png)
+![image](image/last.jpg)
 
      解释：mqtt物联网模块设置P1，P2引脚为发送接收引脚，连接wifi emakefun，然后设置自己模块用户名bbbb；连接服务器192.168.12.3，端口为1883，之后订阅主题abc，并设置至少能接受到一次消息，之后设置服务器向主题abc推送消息"hi"，然后服务器设置接受主题abc推送过来的消息并在microbit上显示出来。
