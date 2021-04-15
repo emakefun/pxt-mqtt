@@ -325,13 +325,13 @@ LinkID: 当前只支持 0
 
 ### microbit makecode块
 - 初始化设置块
-![image](image/11.jpg)
+![image](image/init.png)
 
- 在初始化设置块中，首先要设置TX(发送)和RX(接收)端口引脚,然后是设置模块需要连接的wifi账号和密码，IoT service为设置用户账号(自己取名)，来区别你和其他用户；后面则是输入服务器ip和端口。
+ 在初始化设置块中，首先要设置TX(发送)和RX(接收)端口引脚,然后是设置模块需要连接的wifi账号和密码，初始化还需要设置自己mqtt服务器的ip和端口（默认为1883），同时点击➕可以设置其他信息。
 
 - 消息订阅块
 
-![image](image/12.jpg)
+![image](image/sub.png)
 
 消息订阅快是用来订阅主题然后设置消息接受的模块，其topic后输入你想订阅的主题名称，后面的Qos为你订阅消息传输设置。
 当输入数字为0时: 服务器发送的一条消息，用户最多能收到一次，也就是说服务器力向用户发送消息，如果发送失败，也就算了；
@@ -340,18 +340,37 @@ LinkID: 当前只支持 0
   
 - 消息发送块
   
-![image](image/13.jpg)
+![image](image/pub.png)
 
-设置服务器向用户发为哪个主题的发送内容，public后输入你需要以哪个主题推送消息，Data后则是消息内容。
+向用户发为主题的发送内容，输入你需要以哪个主题推送消息和消息内容。
 
-- 消息接受块
+- 消息接收块
   
-![image](image/14.jpg)
+![image](image/rec.jpg)
 
-接收你所订阅的某个主题推送过来的消息,输出内容为字符串形式。
+接收你所订阅的某个主题推送过来的消息。
 
-### 演示
+- http模式配置块
+  
+![image](image/http.png)
 
-![image](image/last.jpg)
+设置http服务器的域名（或IP）和端口，默认80。
 
-     解释：mqtt物联网模块设置P1，P2引脚为发送接收引脚，连接wifi emakefun，然后设置自己模块用户名bbbb；连接服务器192.168.12.3，端口为1883，之后订阅主题abc，并设置至少能接受到一次消息，之后设置服务器向主题abc推送消息"hi"，然后服务器设置接受主题abc推送过来的消息并在microbit上显示出来。
+- http模式get请求块
+  
+![image](image/get_method.png)
+
+发送get请求。
+
+
+### mqtt模式演示
+
+![image](image/last.png)
+
+     解释：mqtt物联网模块设置P1，P2引脚为发送接收引脚，设置Wi-Fi配置，连接Wi-Fi；连接mqtt服务器，端口为1883，之后订阅主题“test”，并设置至少能接受到一次消息，当按下microbit A键之后，向主题“testtopic”推送消息"hello world"，同时也接收来自主题“test”推送过来的数据，并在microbit上显示出来。
+
+### http模式演示
+
+![image](image/http_example.png)
+
+     解释：mqtt物联网模块设置P1，P2引脚为发送接收引脚，设置Wi-Fi配置，连接Wi-Fi；连接http服务器，端口为80，当按下microbit A键之后，mqtt模块发送get请求“test”,并且把接收到的请求数据在microbit点阵屏上显示。
