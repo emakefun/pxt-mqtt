@@ -357,11 +357,8 @@ namespace MQTT {
         emmqtt_connect_iot("http");
         // serial.setRxBufferSize(500);
     }
-
-      /**
-     * @param topic http topic; eg: test
-    */
-    //% blockId=em_http_get block="MQTT物联网模块发送 get 请求 topic %topi"
+    
+    //% blockId=em_http_get block="物联网模块http模式发送 get 请求 topic %topic"
     //% weight=98
     //% subcategory="http模式"
     export function em_http_get(topic: string): string {
