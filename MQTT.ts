@@ -240,11 +240,7 @@ namespace MQTT {
         }
         serial.writeString("AT+CIPSTART=\"TCP\",\"" + MQTT_SERVER_IP + "\"," + MQTT_SERVER_PORT + "\r\n");
         basic.pause(1000);
-
-        serial.writeString("AT+CIPMODE=1\r\n");
-        basic.pause(1000)
-        serial.writeString("AT+CIPSEND\r\n");
-        basic.pause(1000)
+        
     }
 
 
@@ -319,7 +315,6 @@ namespace MQTT {
             count = 0;
         } 
          else {
-
              if(count > 0){
                 // count++;
                 // basic.showNumber(count);
@@ -357,7 +352,7 @@ namespace MQTT {
         emmqtt_connect_iot("http");
         // serial.setRxBufferSize(500);
     }
-    
+
     //% blockId=em_http_get block="物联网模块http模式发送 get 请求 topic %topic"
     //% weight=98
     //% subcategory="http模式"
@@ -365,15 +360,24 @@ namespace MQTT {
         if (!EMMQTT_SERIAL_INIT) {
             emmqtt_serial_init()
         }
+        serial.writeString("AT+CIPMODE=1\r\n");
+        basic.pause(500)
+        serial.writeString("AT+CIPSEND\r\n");
+        basic.pause(500)
         getMethod(topic);
         // return topic == MQTT_TOPIC?MQTT_MESSGE:"";
+        basic.pause(500)
+        serial.writeString("+++");
+        basic.pause(1500)
+        serial.writeString("AT+CIPMODE=0\r\n");
         return HTTP_RESULT;
         // return "";
     }
 
     function getMethod(topic: string): void{
         emmqttClearRxBuffer();
-        
+        let startStr = topic.substr(0, 1);
+        if (startStr != "/") topic = "/" + topic;
         // basic.showString("a");
         let requestStr = "GET " + topic + " HTTP/1.1\r\n";
         if(!hasLetter(MQTT_SERVER_IP)){
@@ -387,23 +391,15 @@ namespace MQTT {
         // serial.setRxBufferSize(200);
         serial.writeString(requestStr);
         basic.pause(2000);
-        // serial.onDataReceived("\n", function () {
-        //     let Emqtt_message_str = serial.readString();
-        //     basic.showString(Emqtt_message_str);
-        // });
-        let length = HTTP_RESPONSE_STR.length;
-        // basic.showNumber(length);
+       
         let arr = HTTP_RESPONSE_STR.split("emok");
         if(arr.length >  4){
             let result = arr[arr.length - 4];
             HTTP_RESULT = (result.substr(0, result.length - 2));
-        }
-        // if(arr.length >  6){
-        //     let dataLength = arr[arr.length - 7];
-        //     basic.showString(dataLength);
-        // }
-        
+        } 
         HTTP_RESPONSE_STR = EMMQTT_STR_TYPE_IS_NONE;
+
+
     }
     
     function hasLetter(str: string) {
