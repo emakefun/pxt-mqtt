@@ -358,18 +358,21 @@ namespace MQTT {
     //% subcategory="http模式"
     export function em_http_get(topic: string): string {
         if (!EMMQTT_SERIAL_INIT) {
-            emmqtt_serial_init()
+            emmqtt_serial_init();
         }
         serial.writeString("AT+CIPMODE=1\r\n");
-        basic.pause(500)
+        basic.pause(500);
         serial.writeString("AT+CIPSEND\r\n");
-        basic.pause(500)
+        basic.pause(500);
         getMethod(topic);
         // return topic == MQTT_TOPIC?MQTT_MESSGE:"";
-        basic.pause(500)
+        basic.pause(500);
         serial.writeString("+++");
-        basic.pause(1500)
+        basic.pause(1500);
         serial.writeString("AT+CIPMODE=0\r\n");
+        basic.pause(500);
+        serial.writeString("AT+CIPSTART=\"TCP\",\"" + MQTT_SERVER_IP + "\"," + MQTT_SERVER_PORT + "\r\n");
+        basic.pause(500);
         return HTTP_RESULT;
         // return "";
     }
