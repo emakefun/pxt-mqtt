@@ -352,7 +352,7 @@ namespace MQTT {
         // serial.setRxBufferSize(500);
     }
 
-    //% blockId=em_http_get block="物联网模块http模式发送 get 请求 topic %topic"
+    //% blockId=em_http_get block="物联网模块http模式发送get请求地址%topic"
     //% weight=98
     //% subcategory="http模式"
     export function em_http_get(topic: string): string {
@@ -365,7 +365,7 @@ namespace MQTT {
         basic.pause(50);
         getMethod(topic);
         // return topic == MQTT_TOPIC?MQTT_MESSGE:"";
-        basic.pause(500);
+        // basic.pause(500);
         serial.writeString("+++");
         basic.pause(1500);
         serial.writeString("AT+CIPMODE=0\r\n");
@@ -392,7 +392,7 @@ namespace MQTT {
         requestStr += "Connection: keep-alive\r\n\r\n";
         // serial.setRxBufferSize(200);
         serial.writeString(requestStr);
-        basic.pause(2000);
+        basic.pause(100);
        
         let arr = HTTP_RESPONSE_STR.split("emok");
         if(arr.length >  4){
@@ -400,8 +400,6 @@ namespace MQTT {
             HTTP_RESULT = (result.substr(0, result.length - 2));
         } 
         HTTP_RESPONSE_STR = EMMQTT_STR_TYPE_IS_NONE;
-
-
     }
     
     function hasLetter(str: string) {
