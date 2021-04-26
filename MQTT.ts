@@ -310,7 +310,7 @@ namespace MQTT {
             // basic.showNumber(dataArr.length);
             // let resultStr = dataArr[dataArr.length - 1];
             // basic.showString(item);
-        }else if(item == '0'){
+        }else if(item == '0' || item == 'AT+CIPMODE=0'){
             count = 0;
         } 
          else {
