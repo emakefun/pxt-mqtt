@@ -365,7 +365,7 @@ namespace MQTT {
         basic.pause(50);
         getMethod(topic);
         // return topic == MQTT_TOPIC?MQTT_MESSGE:"";
-        // basic.pause(500);
+        basic.pause(100);
         serial.writeString("+++");
         basic.pause(1500);
         serial.writeString("AT+CIPMODE=0\r\n");
@@ -392,7 +392,7 @@ namespace MQTT {
         requestStr += "Connection: keep-alive\r\n\r\n";
         // serial.setRxBufferSize(200);
         serial.writeString(requestStr);
-        basic.pause(100);
+        basic.pause(300);
        
         let arr = HTTP_RESPONSE_STR.split("emok");
         if(arr.length >  4){
