@@ -392,7 +392,7 @@ namespace MQTT {
         requestStr += "Connection: keep-alive\r\n\r\n";
         // serial.setRxBufferSize(200);
         serial.writeString(requestStr);
-        basic.pause(300);
+        basic.pause(1000);
        
         let arr = HTTP_RESPONSE_STR.split("emok");
         if(arr.length >  4){
