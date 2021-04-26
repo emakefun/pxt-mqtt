@@ -309,8 +309,8 @@ namespace MQTT {
             // let dataArr = item.split("\r\n\r\n");
             // basic.showNumber(dataArr.length);
             // let resultStr = dataArr[dataArr.length - 1];
-            // basic.showString(item);
-        }else if(item == '0' || item == 'AT+CIPMODE=0'){
+            // basic.showString(item); || item == 'AT+CIPMODE=0'
+        }else if(item == '0' ){
             count = 0;
         } 
          else {
