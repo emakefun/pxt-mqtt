@@ -394,7 +394,7 @@ namespace MQTT {
         basic.pause(1000);
        
         let arr = HTTP_RESPONSE_STR.split("emok");
-        basic.showNumber(arr.length);
+        // basic.showNumber(arr.length);
         if(arr.length >  4){
             let result = arr[arr.length - 4];
             HTTP_RESULT = (result.substr(0, result.length - 2));
