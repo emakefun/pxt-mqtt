@@ -1,5 +1,4 @@
 
-
 const EMMQTT_BOOL_TYPE_IS_TRUE = true
 const EMMQTT_BOOL_TYPE_IS_FALSE = false
 const EMMQTT_ERROR_TYPE_IS_SUCCE = 0
@@ -230,7 +229,7 @@ namespace MQTT {
         serial.writeString("AT+MQTTUSERCFG=0,1,\"" + MQTT_CLIENT_ID + "\",\"" + MQTT_CLIENT_NAME + "\",\"" + MQTT_CLIENT_PASSWORD + "\",0,0,\"\"\r\n");
         basic.pause(200);
         serial.writeString("AT+MQTTCONN=0,\"" + MQTT_SERVER_IP + "\"," + MQTT_SERVER_PORT + ",0\r\n");
-        basic.pause(2000);
+        basic.pause(1000);
         // serial.writeString("AT+CIFSR\r\n");
     }
 
@@ -309,8 +308,8 @@ namespace MQTT {
             // let dataArr = item.split("\r\n\r\n");
             // basic.showNumber(dataArr.length);
             // let resultStr = dataArr[dataArr.length - 1];
-            // basic.showString(item); || item == 'AT+CIPMODE=0'
-        }else if(item == '0' ){
+            // basic.showString(item);
+        }else if(item == '0'){
             count = 0;
         } 
          else {
@@ -371,7 +370,7 @@ namespace MQTT {
         serial.writeString("AT+CIPMODE=0\r\n");
         basic.pause(50);
         serial.writeString("AT+CIPSTART=\"TCP\",\"" + MQTT_SERVER_IP + "\"," + MQTT_SERVER_PORT + "\r\n");
-        basic.pause(100);
+        basic.pause(50);
         return HTTP_RESULT;
         // return "";
     }
@@ -392,7 +391,7 @@ namespace MQTT {
         requestStr += "Connection: keep-alive\r\n\r\n";
         // serial.setRxBufferSize(200);
         serial.writeString(requestStr);
-        basic.pause(500);
+        basic.pause(1000);
        
         let arr = HTTP_RESPONSE_STR.split("emok");
         if(arr.length >  4){
