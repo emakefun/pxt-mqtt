@@ -220,7 +220,7 @@ namespace MQTT {
         serial.writeString("AT+CWMODE=3\r\n");
         basic.pause(100);
         serial.writeString("AT+CWJAP=\"" + MQTT_SSID + "\",\"" + MQTT_SSIDPWD + "\"\r\n");
-        basic.pause(5000);
+        basic.pause(500);
     }
 
     function emmqtt_connect_mqtt(): void {
@@ -230,7 +230,7 @@ namespace MQTT {
         serial.writeString("AT+MQTTUSERCFG=0,1,\"" + MQTT_CLIENT_ID + "\",\"" + MQTT_CLIENT_NAME + "\",\"" + MQTT_CLIENT_PASSWORD + "\",0,0,\"\"\r\n");
         basic.pause(200);
         serial.writeString("AT+MQTTCONN=0,\"" + MQTT_SERVER_IP + "\"," + MQTT_SERVER_PORT + ",0\r\n");
-        basic.pause(1000);
+        basic.pause(2000);
         // serial.writeString("AT+CIFSR\r\n");
     }
 
@@ -360,18 +360,18 @@ namespace MQTT {
             emmqtt_serial_init();
         }
         serial.writeString("AT+CIPMODE=1\r\n");
-        basic.pause(50);
+        basic.pause(500);
         serial.writeString("AT+CIPSEND\r\n");
         basic.pause(50);
         getMethod(topic);
         // return topic == MQTT_TOPIC?MQTT_MESSGE:"";
-        basic.pause(100);
+        basic.pause(500);
         serial.writeString("+++");
         basic.pause(1500);
         serial.writeString("AT+CIPMODE=0\r\n");
         basic.pause(50);
         serial.writeString("AT+CIPSTART=\"TCP\",\"" + MQTT_SERVER_IP + "\"," + MQTT_SERVER_PORT + "\r\n");
-        basic.pause(50);
+        basic.pause(500);
         return HTTP_RESULT;
         // return "";
     }
@@ -392,7 +392,7 @@ namespace MQTT {
         requestStr += "Connection: keep-alive\r\n\r\n";
         // serial.setRxBufferSize(200);
         serial.writeString(requestStr);
-        basic.pause(1000);
+        basic.pause(2000);
        
         let arr = HTTP_RESPONSE_STR.split("emok");
         if(arr.length >  4){
