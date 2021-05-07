@@ -219,7 +219,7 @@ namespace MQTT {
         serial.writeString("AT+CWMODE=3\r\n");
         basic.pause(100);
         serial.writeString("AT+CWJAP=\"" + MQTT_SSID + "\",\"" + MQTT_SSIDPWD + "\"\r\n");
-        basic.pause(500);
+        basic.pause(4000);
     }
 
     function emmqtt_connect_mqtt(): void {
