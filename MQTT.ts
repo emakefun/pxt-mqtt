@@ -28,7 +28,7 @@ namespace MQTT {
     let MQTT_SERVER_IP = EMMQTT_STR_TYPE_IS_NONE;
     let MQTT_SERVER_PORT = 1883;
     let HTTP_RESPONSE_STR = EMMQTT_STR_TYPE_IS_NONE;
-
+    let HTTP_CONNECT_STATUS = EMMQTT_BOOL_TYPE_IS_FALSE;
     let MQTT_TOPIC: any = EMMQTT_STR_TYPE_IS_NONE
     let MQTT_MESSGE: any = EMMQTT_STR_TYPE_IS_NONE
     let HTTP_RESULT = EMMQTT_STR_TYPE_IS_NONE;
@@ -302,6 +302,10 @@ namespace MQTT {
             EMMQTT_ANSWER_CMD = "SubOk"
             EMMQTT_ANSWER_CONTENT = EMMQTT_STR_TYPE_IS_NONE
             return
+        }else if (item.indexOf("STATUS:3", 0) != -1){
+            HTTP_CONNECT_STATUS = EMMQTT_BOOL_TYPE_IS_TRUE
+        }else if (item.indexOf("STATUS:4", 0) != -1) {
+            HTTP_CONNECT_STATUS = EMMQTT_BOOL_TYPE_IS_FALSE
         }else if (item.indexOf("HTTP/1.1 200 OK") != -1) {
             count = 1;
             // basic.showNumber(0);
@@ -357,6 +361,12 @@ namespace MQTT {
     export function em_http_get(topic: string): string {
         if (!EMMQTT_SERIAL_INIT) {
             emmqtt_serial_init();
+        }
+        serial.writeString("AT+CIPSTATUS\r\n");
+        basic.pause(50);
+        if (!HTTP_CONNECT_STATUS) {
+            emmqtt_connect_http();
+            // return;
         }
         serial.writeString("AT+CIPMODE=1\r\n");
         basic.pause(50);
