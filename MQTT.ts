@@ -352,6 +352,12 @@ namespace MQTT {
         MQTT_SERVER_IP = serverIp;
         MQTT_SERVER_PORT = serverPort;
         emmqtt_connect_iot("http");
+        serial.writeString("AT+CIPSTATUS\r\n");
+        basic.pause(50);
+        while (!HTTP_CONNECT_STATUS) {
+            emmqtt_connect_http();
+            // return;
+        }
         // serial.setRxBufferSize(500);
     }
 
@@ -364,7 +370,7 @@ namespace MQTT {
         }
         serial.writeString("AT+CIPSTATUS\r\n");
         basic.pause(50);
-        if (!HTTP_CONNECT_STATUS) {
+        while (!HTTP_CONNECT_STATUS) {
             emmqtt_connect_http();
             // return;
         }
