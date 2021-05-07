@@ -356,6 +356,8 @@ namespace MQTT {
         basic.pause(50);
         while (!HTTP_CONNECT_STATUS) {
             emmqtt_connect_http();
+            serial.writeString("AT+CIPSTATUS\r\n");
+            basic.pause(50);
             // return;
         }
         // serial.setRxBufferSize(500);
@@ -372,6 +374,8 @@ namespace MQTT {
         basic.pause(50);
         while (!HTTP_CONNECT_STATUS) {
             emmqtt_connect_http();
+            serial.writeString("AT+CIPSTATUS\r\n");
+            basic.pause(50);
             // return;
         }
         serial.writeString("AT+CIPMODE=1\r\n");
