@@ -216,12 +216,36 @@ namespace MQTT {
     }
 
     function emqtt_connect_wifi(): void {
+		atReset();
         serial.writeString("AT+CWMODE=3\r\n");
         basic.pause(100);
         serial.writeString("AT+CWJAP=\"" + MQTT_SSID + "\",\"" + MQTT_SSIDPWD + "\"\r\n");
         basic.pause(7000);
+		
     }
-
+	
+	function atReset(): void {
+		for (let i = 0; i < 3; i++) {
+			serial.writeString("AT\r\n");
+			basic.pause(1000);
+		}
+		serial.writeString("AT+RST\r\n");
+		// basic.pause(100);
+		serial.writeString("ATE0\r\n");
+		// basic.pause(100);
+		serial.writeString("AT+CWAUTOCONN=0\r\n");
+		// basic.pause(100);
+		serial.writeString("AT+CWMODE=1\r\n");
+		basic.pause(200);
+		serial.writeString("AT+CIPMUX=1\r\n");
+		// basic.pause(100);
+		serial.writeString("AT+CIPDINFO=1\r\n");
+		// basic.pause(100);
+		serial.writeString("AT+CWAUTOCONN=0\r\n");
+		// basic.pause(100);
+		serial.writeString("AT+CWDHCP=1,1\r\n");
+		basic.pause(200);
+	}
     function emmqtt_connect_mqtt(): void {
         if (!EMMQTT_SERIAL_INIT) {
             emmqtt_serial_init()
