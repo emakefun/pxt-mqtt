@@ -174,6 +174,9 @@ namespace MQTT {
      * 
      * @param clientId to clientId ,eg: "yourClientId"
      * @param username to username ,eg: "yourClientName"
+	 * @param productKey ,eg: "productKey"
+	 * @param deviceName ,eg: "deviceName"
+	 * @param deviceSecret ,eg: "deviceSecret"
      * @param clientPwd to clientPwd ,eg: "yourClientPwd"
      * @param serverIp to serverIp ,eg: "yourServerIp"
      * @param serverPort to serverPort ,eg: 1883  
@@ -205,7 +208,7 @@ namespace MQTT {
 
     
 
-     //% blockId=mqtt_publish_basic block="MQTT向话题(TOPIC) %topic 发送数据 %data"
+    //% blockId=mqtt_publish_basic block="MQTT向话题(TOPIC) %topic 发送数据 %data"
     //% weight=100
     //% subcategory="MQTT模式"
     export function em_mqtt_publish_basic(topic: string, data: string): void {
