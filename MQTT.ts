@@ -35,6 +35,10 @@ namespace MQTT {
     
     let EMMQTT_ANSWER_CMD = EMMQTT_STR_TYPE_IS_NONE
     let EMMQTT_ANSWER_CONTENT = EMMQTT_STR_TYPE_IS_NONE
+	//阿里云三要素
+	let EMMQTT_ALIYUN_PRODUCTKEY = EMMQTT_STR_TYPE_IS_NONE
+	let EMMQTT_ALIYUN_DEVICENAME = EMMQTT_STR_TYPE_IS_NONE
+	let EMMQTT_ALIYUN_DEVICESECRET = EMMQTT_STR_TYPE_IS_NONE
     // //animation
     let EMMQTT_WIFI_ICON = 1
     let EMMQTT_MQTT_ICON = 1
@@ -165,6 +169,39 @@ namespace MQTT {
         MQTT_SERVER_PORT = serverPort;
         emmqtt_connect_iot("mqtt");
     }
+	
+	/**
+     * 
+     * @param clientId to clientId ,eg: "yourClientId"
+     * @param username to username ,eg: "yourClientName"
+     * @param clientPwd to clientPwd ,eg: "yourClientPwd"
+     * @param serverIp to serverIp ,eg: "yourServerIp"
+     * @param serverPort to serverPort ,eg: 1883  
+ 
+    */
+    //% weight=101
+    //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3
+    //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
+    //% blockId=em_mqtt_connect
+    //% block="MQTT模块连接阿里云服务初始设置 | 阿里云服务器: %serverIp| 端口: %serverPort| 产品key: %productKey|设备名称: %deviceName|设备秘钥: %deviceSecret  || 客户端ID: %clientId | 客户端用户名: %username | 客户端密码: %clientPwd"
+    //% subcategory="MQTT(阿里云服务器)模式"
+    export function em_mqtt_aliyun_connect(/*mqtt*/ serverIp: string, serverPort: number, productKey: string, deviceName: string, deviceSecret: string, clientId?: string, username?: string, clientPwd?: string
+        ): void {
+       
+        // Emmqtt_serial_init();
+        // emqtt_connect_wifi();
+        MQTT_CLIENT_ID = clientId;
+        MQTT_CLIENT_NAME = username;
+        MQTT_CLIENT_PASSWORD = clientPwd;
+        MQTT_SERVER_IP = serverIp;
+        MQTT_SERVER_PORT = serverPort;
+		
+		EMMQTT_ALIYUN_PRODUCTKEY = productKey;
+		EMMQTT_ALIYUN_DEVICENAME = deviceName;
+		EMMQTT_ALIYUN_DEVICESECRET = deviceSecret;
+        emmqtt_connect_iot("aliyun");
+    }
+
 
     
 
@@ -256,7 +293,18 @@ namespace MQTT {
         basic.pause(1000);
         // serial.writeString("AT+CIFSR\r\n");
     }
-
+	
+	function emmqtt_connect_aliyun_mqtt(): void {
+        if (!EMMQTT_SERIAL_INIT) {
+            emmqtt_serial_init()
+        }
+        serial.writeString("AT+MQTTUSERCFG=0,1,\"" + MQTT_CLIENT_ID + "\",\"" + MQTT_CLIENT_NAME + "\",\"" + MQTT_CLIENT_PASSWORD + "\",0,0,\"\"\r\n");
+        basic.pause(200);
+        serial.writeString("AT+ALIYUN_MQTTCONN=0,\"" + MQTT_SERVER_IP + "\"," + MQTT_SERVER_PORT + ",\"" + EMMQTT_ALIYUN_PRODUCTKEY + "\",\"" + EMMQTT_ALIYUN_DEVICENAME + ",\"" + EMMQTT_ALIYUN_DEVICESECRET + "\"\r\n");
+        basic.pause(1000);
+        // serial.writeString("AT+CIFSR\r\n");
+    }
+	
     function emmqtt_connect_http(): void {
         if (!EMMQTT_SERIAL_INIT) {
             emmqtt_serial_init()
@@ -277,7 +325,9 @@ namespace MQTT {
             emmqtt_connect_http();
         }else if (type == "mqtt"){
             emmqtt_connect_mqtt();
-        }
+        }else if (type == "aliyun") {
+			emmqtt_connect_aliyun_mqtt();
+		}
         while (_timeout < 1000) {
             if (_timeout % 50 == 0) {
                 Em_mqtt_icon_display()
