@@ -186,6 +186,26 @@ scheme:
 9: MQTT over WebSocket Secure(based on TLS, provide client certificate)
 10: MQTT over WebSocket Secure(based on TLS, verify server certificate and provide client certificate)
 
+### AT+ALIYUN_MQTTCONN?
+
+设置指令:
+
+AT+ALIYUN_MQTTCONN=<"host">,<port>,<"ProductKey">,<"DeviceName">,<"DeviceSecret">
+
+功能:
+连接指定的阿里云MQTT broker
+
+参数说明:
+host: 连接阿里云的MQTT broker 域名, 详情请参考[**阿里云域名格式**](https://help.aliyun.com/document_detail/147356.html?spm=a2c4g.11186623.6.587.253b4006W32crS)
+port: 连接 MQTT broker 端口, 最大 65535 默认 1883
+ProductKey: 设备所属产品的ProductKey，即物联网平台为产品颁发的全局唯一标识符
+DeviceName: 设备在产品内的唯一标识符。DeviceName与设备所属产品的ProductKey组合，作为设备标识，用来与物联网平台进行连接认证和通信。
+DeviceSecret: 物联网平台为设备颁发的设备密钥，用于认证加密。需与DeviceName成对使用。
+
+响应:
+
+OK或ERROR
+
 ### AT+MQTTPUB
 设置指令:
 
@@ -329,6 +349,10 @@ LinkID: 当前只支持 0
 
  在初始化设置块中，首先要设置TX(发送)和RX(接收)端口引脚,然后是设置模块需要连接的wifi账号和密码，初始化还需要设置自己mqtt服务器的ip和端口（默认为1883），同时点击➕可以设置其他信息。
 
+- 阿里云服务器设置块
+![image](image/aliyun introduction.png)
+	在阿里云控制台找到相对应的域名，设备所属产品的ProductKey、设备在产品内的唯一标识符DeviceName、物联网平台为设备颁发的设备密钥DeviceSecret
+	详情请点击[**这里**](https://help.aliyun.com/document_detail/73729.html?spm=a2c4g.11186623.6.591.52a8209fIv26gP)
 - 消息订阅块
 
 ![image](image/sub.png)
@@ -367,10 +391,16 @@ LinkID: 当前只支持 0
 
 ![image](image/last.png)
 
-     解释：mqtt物联网模块设置P1，P2引脚为发送接收引脚，设置Wi-Fi配置，连接Wi-Fi；连接mqtt服务器，端口为1883，之后订阅主题“test”，并设置至少能接受到一次消息，当按下microbit A键之后，向主题“testtopic”推送消息"hello world"，同时也接收来自主题“test”推送过来的数据，并在microbit上显示出来。
+    解释：mqtt物联网模块设置P1，P2引脚为发送接收引脚，设置Wi-Fi配置，连接Wi-Fi；连接mqtt服务器，端口为1883，之后订阅主题“test”，并设置至少能接受到一次消息，当按下microbit A键之后，向主题“testtopic”推送消息"hello world"，同时也接收来自主题“test”推送过来的数据，并在microbit上显示出来。
 
 ### http模式演示
 
 ![image](image/http_example.png)
 
-     解释：mqtt物联网模块设置P1，P2引脚为发送接收引脚，设置Wi-Fi配置，连接Wi-Fi；连接http服务器，端口为80，当按下microbit A键之后，mqtt模块发送get请求“test”,并且把接收到的请求数据在microbit点阵屏上显示。
+    解释：mqtt物联网模块设置P1，P2引脚为发送接收引脚，设置Wi-Fi配置，连接Wi-Fi；连接http服务器，端口为80，当按下microbit A键之后，mqtt模块发送get请求"test",并且把接收到的请求数据在microbit点阵屏上显示。
+
+### 阿里云 mqtt模式演示
+![image](image/aliyun.jpg)
+
+	解释：mqtt物联网模块设置P1，P2引脚为发送接收引脚，设置Wi-Fi配置，连接Wi-Fi；连接阿里云服务器，端口为1883，当按下microbit A键之后，mqtt模块向topic(/a1gVfAJo2pv/emakefun/user/update)发送"helloworld",发送的数据我们可以通过查看阿里云日志服务里面的数据和状态，看到对应的日志;同时也接收来自主题"/a1gVfAJo2pv/emakefun/user/get"推送过来的数据，并在microbit上显示出来。
+	
