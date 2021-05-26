@@ -185,9 +185,9 @@ namespace MQTT {
     //% weight=101
     //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3
     //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
-    //% blockId=em_mqtt_connect
+    //% blockId=em_mqtt_aliyun_connect
     //% block="MQTT模块连接阿里云服务初始设置 | 阿里云服务器: %serverIp| 端口: %serverPort| 产品key: %productKey|设备名称: %deviceName|设备秘钥: %deviceSecret  || 客户端ID: %clientId | 客户端用户名: %username | 客户端密码: %clientPwd"
-    //% subcategory="MQTT(阿里云服务器)模式"
+    //% subcategory="ALIYUNMQTT模式"
     export function em_mqtt_aliyun_connect(/*mqtt*/ serverIp: string, serverPort: number, productKey: string, deviceName: string, deviceSecret: string, clientId?: string, username?: string, clientPwd?: string
         ): void {
        
