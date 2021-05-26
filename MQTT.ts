@@ -303,7 +303,7 @@ namespace MQTT {
         }
         serial.writeString("AT+MQTTUSERCFG=0,1,\"" + MQTT_CLIENT_ID + "\",\"" + MQTT_CLIENT_NAME + "\",\"" + MQTT_CLIENT_PASSWORD + "\",0,0,\"\"\r\n");
         basic.pause(200);
-        serial.writeString("AT+ALIYUN_MQTTCONN=0,\"" + MQTT_SERVER_IP + "\"," + MQTT_SERVER_PORT + ",\"" + EMMQTT_ALIYUN_PRODUCTKEY + "\",\"" + EMMQTT_ALIYUN_DEVICENAME + "\",\"" + EMMQTT_ALIYUN_DEVICESECRET + "\"\r\n");
+        serial.writeString("AT+ALIYUN_MQTTCONN=\"" + MQTT_SERVER_IP + "\"," + MQTT_SERVER_PORT + ",\"" + EMMQTT_ALIYUN_PRODUCTKEY + "\",\"" + EMMQTT_ALIYUN_DEVICENAME + "\",\"" + EMMQTT_ALIYUN_DEVICESECRET + "\"\r\n");
         basic.pause(1000);
         // serial.writeString("AT+CIFSR\r\n");
     }
