@@ -43,6 +43,8 @@ namespace MQTT {
     let EMMQTT_WIFI_ICON = 1
     let EMMQTT_MQTT_ICON = 1
 
+    const mqttSubscribeHandlers: { [topic: string]: (message: string) => void } = {}
+
     export class PacketaMqtt {
        
         
@@ -105,8 +107,8 @@ namespace MQTT {
             EMMQTT_SERIAL_RX,
             BaudRate.BaudRate9600
         )
-        serial.setTxBufferSize(3000);
-        serial.setRxBufferSize(2000);
+        serial.setTxBufferSize(128);
+        serial.setRxBufferSize(128);
         // obloqWriteString("\r")
         item = serial.readString()
         EMMQTT_SERIAL_INIT = EMMQTT_BOOL_TYPE_IS_TRUE
@@ -211,7 +213,7 @@ namespace MQTT {
     //% blockId=mqtt_publish_basic block="MQTT向话题(TOPIC) %topic 发送数据 %data"
     //% weight=100
     //% subcategory="MQTT模式"
-    export function em_mqtt_publish_basic(topic: string, data: string): void {
+    export function em_mqtt_publish_basic(topic: string, data: any): void {
         //AT+MQTTPUB=0,"topic","test",1,0
         // mqtt_publish(topic, data, 1, 0);
         if (!EMMQTT_SERIAL_INIT) {
@@ -236,7 +238,6 @@ namespace MQTT {
         }
         topic = topic.replace(",", "");
         serial.writeString("AT+MQTTSUB=0,\"" + topic + "\"," + qos + "\r\n");
-        // serial.writeString(`WF 12 2 ${qos} ` + topic + ' 0\n')
         basic.pause(500);
     }
 
@@ -248,12 +249,14 @@ namespace MQTT {
     //% blockId=em_mqtt_get_topic_message block="MQTT获取主题 %topic 数据"
     //% weight=100
     //% subcategory="MQTT模式"
-    export function em_mqtt_get_topic_message(topic: string): string {
+    export function em_mqtt_get_topic_message(topic: string,  handler: (message: string) => void) {
         if (!EMMQTT_SERIAL_INIT) {
             emmqtt_serial_init()
         }
-        return topic == MQTT_TOPIC?MQTT_MESSGE:"";
+        mqttSubscribeHandlers[topic] = handler;
     }
+
+
 
     function emqtt_connect_wifi(): void {
 		atReset();
@@ -269,6 +272,7 @@ namespace MQTT {
 			serial.writeString("AT\r\n");
 			basic.pause(1000);
 		}
+        serial.writeString("AT+CWQAP\r\n");
 		serial.writeString("AT+RST\r\n");
 		// basic.pause(100);
 		serial.writeString("ATE0\r\n");
@@ -286,6 +290,7 @@ namespace MQTT {
 		serial.writeString("AT+CWDHCP=1,1\r\n");
 		basic.pause(200);
 	}
+
     function emmqtt_connect_mqtt(): void {
         if (!EMMQTT_SERIAL_INIT) {
             emmqtt_serial_init()
@@ -353,10 +358,10 @@ namespace MQTT {
         return EMMQTT_ERROR_TYPE_IS_SUCCE
         //basic.showString("ok")
     }
-
+    let Emqtt_message_str = "";
     let count = 0;
-    serial.onDataReceived("\n", function () {
-        let Emqtt_message_str = serial.readString();
+    serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
+        Emqtt_message_str += serial.readString();
         let size = Emqtt_message_str.length;
         let item: string = Emqtt_message_str + "";
         // basic.showString(item);
@@ -367,23 +372,48 @@ namespace MQTT {
             // basic.showString("mqtt connect success!");
             basic.showIcon(IconNames.Yes)
             basic.pause(1000);
+            Emqtt_message_str = "";
             return
         } else if (item.indexOf("WIFI DISCONNECT", 0) != -1) {
             EMMQTT_ANSWER_CMD = "MqttWifiConnectFailure"
             basic.showIcon(IconNames.No)
+            Emqtt_message_str = "";
             return
-        } else if (item.indexOf("+MQTTSUBRECV:", 0) != -1) {
-            let offset = item.indexOf(",");
-            MQTT_TOPIC = item.substr(13, (offset - 13));
-            MQTT_MESSGE = item.substr(offset + 1, (size - offset - 1));
+        } else if (item.includes("MQTTSUBRECV")) {
+            // item = item.slice(item.indexOf("MQTTSUBRECV"))
+            item = item.replace("+MQTTSUBRECV:", "");
+            item = item.replace("MQTTSUBRECV:", "");
+            // basic.showString(item);
+            // let recvStringSplit = item.split(":")
+            let splitStr  = item.split(",");
+            let message = splitStr[1];
+            let resStr = "";
+            resStr = message.slice(0, message.length - 2)
+            if(resStr.includes("+")){
+                let messageSplit = resStr.split("+");
+                let messageStr = messageSplit[0]
+                if(messageStr.includes("AT")){
+                    resStr = messageStr.slice(0, messageStr.length - 4)
+                }else{
+                    resStr = messageStr.slice(0, messageStr.length - 2)
+                }
+            }
+            MQTT_MESSGE = resStr;
+            let topicStr = splitStr[0];
+            MQTT_TOPIC = topicStr;
+            mqttSubscribeHandlers[MQTT_TOPIC] && mqttSubscribeHandlers[MQTT_TOPIC](MQTT_MESSGE)
             EMMQTT_ANSWER_CMD = "SubOk"
             EMMQTT_ANSWER_CONTENT = EMMQTT_STR_TYPE_IS_NONE
+            Emqtt_message_str = "";
             return
         }else if (item.indexOf("STATUS:3", 0) != -1){
+            Emqtt_message_str = "";
             HTTP_CONNECT_STATUS = EMMQTT_BOOL_TYPE_IS_TRUE
         }else if (item.indexOf("STATUS:4", 0) != -1) {
+            Emqtt_message_str = "";
             HTTP_CONNECT_STATUS = EMMQTT_BOOL_TYPE_IS_FALSE
         }else if (item.indexOf("HTTP/1.1 200 OK") != -1) {
+            Emqtt_message_str = "";
             count = 1;
             // basic.showNumber(0);
             // let dataArr = item.split("\r\n\r\n");
@@ -392,8 +422,10 @@ namespace MQTT {
             // basic.showString(item);
         }else if(item == '0'){
             count = 0;
+            Emqtt_message_str = "";
         } 
          else {
+            Emqtt_message_str = "";
              if(count > 0){
                 // count++;
                 // basic.showNumber(count);
@@ -402,6 +434,7 @@ namespace MQTT {
             //  basic.showString(item);
             return
         }
+        
     });
 
     /**
